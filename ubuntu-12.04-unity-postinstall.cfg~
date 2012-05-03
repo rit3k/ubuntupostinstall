@@ -34,18 +34,38 @@ action_dummy = dpkg -l > /tmp/pkg-before.txt
 ppa_shutter = ppa:shutter
 pkg_shutter = shutter
 
+# Tweak your system
+#ppa_tweak = ppa:tualatrix/ppa
+#pkg_tweak = ubuntu-tweak
+
 # Terminal the best terminal in the world (PPA NOT YET AVAILABLE FOR PRECISE)
 #ppa_terminator = ppa:gnome-terminator/ppa
 pkg_terminator = terminator
+
+# Geany: Light IDE (PPA NOT YET AVAILABLE FOR PRECISE)
+#ppa_geany = ppa:geany-dev/ppa
+#pkg_geany = geany
 
 # Spotify (DID NOT WORK / SHOULD HAVE A LOOK)
 #url_spotify = http://repository.spotify.com stable non-free
 #key_spotify = 4E9CFF4E
 #pkg_spotify = spotify-client-qt
 
+# Dropbbox share/unshare script for Nautilus
+#ppa_dropboxshare = ppa:nilarimogard/webupd8
+#pkg_dropboxshare = dropbox-share
+
 # Jupiter (a must have for Laptop)
 #ppa_jupiter = ppa:webupd8team/jupiter
 #pkg_jupiter = jupiter
+
+# Handbrake (PPA NOT YET AVAILABLE FOR PRECISE)
+#ppa_handbrake = ppa:stebbins/handbrake-releases
+#pkg_handbrake = handbrake-gtk handbrake-cli
+
+# Marlin, another file browser
+#ppa_marlin = ppa:marlin-devs/marlin-daily
+#pkg_marlin = marlin marlin-plugin-dropbox marlin-plugin-ubuntuone
 
 # Nautilus extra actions
 #ppa_nautilusactionsextra = ppa:nae-team/ppa
@@ -68,13 +88,13 @@ pkg_sublime = sublime-text-2-beta
 # pkgname = pkglist > Add the pkglist to the system
 [packages]
 ubuntu-restrictive = ubuntu-restricted-extras
-development = vim git git-core
-multimedia = vlc x264 ffmpeg2theora oggvideotools istanbul shotwell mplayer pavucontrol gimp gimp-plugin-registry ogmrip transmageddon wavpack mppenc faac flac vorbis-tools faad lame sound-juicer picard arista mypaint libdvdread4
+development = build-essential vim subversion git git-core rabbitvcs-nautilus anjuta geany
+multimedia = vlc x264 ffmpeg2theora oggvideotools istanbul shotwell mplayer hugin nautilus-image-converter pavucontrol gimp gimp-plugin-registry ogmrip transmageddon guvcview wavpack mppenc faac flac vorbis-tools faad lame nautilus-script-audio-convert cheese sound-juicer picard arista milkytracker mypaint libdvdread4
 network = iftop ifstat iptraf wireshark tshark arp-scan htop netspeed nmap netpipe-tcp
 system = terminator preload lsb-core gparted lm-sensors compizconfig-settings-manager hardinfo fortune-mod libnotify-bin compiz-fusion-plugins-extra most tree
 security = rkhunter chkrootkit cron-apt fail2ban
-web = flashplugin-downloader xchat ttf-mscorefonts-installer nautilus-dropbox
-unity =
+web = pidgin pidgin-facebookchat pidgin-plugin-pack flashplugin-downloader xchat ttf-mscorefonts-installer nautilus-dropbox xclip zenity
+unity = myunity
 
 # The Unity configuration section
 # theme = themename              > Use the Unity theme themename
@@ -83,9 +103,9 @@ unity =
 # conky = cfgfile                > .conkyrc URL
 [unity]
 #theme = TOBECONFIGURE
-#icons = Faenza
+icons = Faenza
 #cursors = TOBECONFIGURE
-#conky = https://raw.github.com/nicolargo/ubuntupostinstall/master/conkyrc
+conky = https://raw.github.com/nicolargo/ubuntupostinstall/master/conkyrc
 
 
 # The . files section

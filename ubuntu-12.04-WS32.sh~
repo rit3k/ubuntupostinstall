@@ -1,0 +1,198 @@
+#!/bin/bash
+#
+# GPL
+#
+# Syntax: # sudo ./ubuntu-12.04-WS.sh
+#
+#Inspiration Nicolargo & Pierre CLÉMENT
+VERSION="0.1"
+
+dpkg -l > /tmp/pkg-before.txt
+
+#=============================================================================
+# Application list to install:
+#(virtualbox virtualbox-guest-additions ..
+# See further for applications that requires specific repository
+LIST=" nautilus-dropbox"
+# Developpement
+LIST=$LIST" vim git-core sublime-text-2 oracle-java7-installer"
+# Multimedia
+LIST=$LIST" spotify-client-qt ffmpeg vlc shutter darktable"
+# Network
+LIST=$LIST" "
+# System
+LIST=$LIST" curl htop"
+# Web
+LIST=$LIST" google-chrome-stable ttf-mscorefonts-installer"
+#=============================================================================
+
+# Application list to remove: adapt it to your needs
+# Internet
+REMOVE_LIST="tomboy"
+# Internet
+REMOVE_LIST=$REMOVE_LIST" firefox-locale-en thunderbird transmission-common"
+# Multimedia 
+REMOVE_LIST=$REMOVE_LIST" banshee totem-common shotwell"
+# Games 
+REMOVE_LIST=$REMOVE_LIST" gnome-games-common gbrainy aisleriot"
+# LibreOffice 
+REMOVE_LIST=$REMOVE_LIST" libreoffice-common"
+
+# Test que le script est lance en root
+if [ $EUID -ne 0 ]; then
+  echo "This script has to be run with root permissions: # sudo $0" 1>&2
+  exit 1
+fi
+
+ADDAPT="add-apt-repository -y"
+
+# Ajout des depots
+#-----------------
+
+UBUNTUVERSION=`lsb_release -cs`
+echo "Adding repositories for Ubuntu $UBUNTUVERSION"
+
+# Restricted extra
+# The Ubuntu Restricted Extras will install Adobe Flash Player, Java Runtime Environment (JRE) (sun-java-jre) with Firefox plug-ins (icedtea), a set of Microsoft Fonts (msttcorefonts), multimedia codecs (w32codecs or w64codecs), mp3-compatible encoding (lame), FFMpeg, extra Gstreamer codecs, the package for DVD decoding (libdvdread4, but see below for info on libdvdcss2), the unrar archiver, odbc, and cabextract. It also installs multiple "stripped" codecs and avutils (libavcodec-unstripped-52 and libavutil-unstripped-49).
+LIST=$LIST" ubuntu-restricted-extras"
+
+# Latest NVidia GPU driver
+#$ADDAPT ppa:ubuntu-x-swat/x-updates
+
+# Shutter screen capture
+$ADDAPT ppa:shutter
+
+# MKVExtractor GUI
+$ADDAPT ppa:hizo/logiciels
+
+# Darktable
+$ADDAPT ppa:pmjdebruijn/darktable-release-plus
+
+# Oracle Java
+$ADDAPT ppa:webupd8team/java
+
+# Wine
+$ADDAPT ppa:ubuntu-wine/ppa
+
+# Gimp
+$ADDAPT ppa:otto-kesselgulasch/gimp
+
+# Google Chrome
+egrep '^deb\ .*chrome' /etc/apt/sources.list > /dev/null
+if [ $? -ne 0 ]
+then
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+        echo "## Google Chrome" >> /etc/apt/sources.list
+        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list
+fi
+
+# Dropbox
+egrep '^deb\ .*dropbox' /etc/apt/sources.list > /dev/null
+if [ $? -ne 0 ]
+then
+        apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
+        echo "## Dropbox" >> /etc/apt/sources.list
+        echo "deb http://linux.dropbox.com/ubuntu precise main" >> /etc/apt/sources.list
+fi
+
+# Spotify
+egrep '^deb\ .*spotify' /etc/apt/sources.list > /dev/null
+if [ $? -ne 0 ]
+then
+        apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
+        echo "## Spotify" >> /etc/apt/sources.list
+        echo "deb http://repository.spotify.com stable non-free" >> /etc/apt/sources.list
+fi
+
+# Virtual box
+#egrep '^deb\ .*virtualbox' /etc/apt/sources.list > /dev/null
+#if [ $? -ne 0 ]
+#then
+#        wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
+#        echo "## VirtualBox" >> /etc/apt/sources.list
+#        echo "deb http://download.virtualbox.org/virtualbox/debian oneiric contrib" >> /etc/apt/sources.list
+fi
+
+# Update
+#-------
+
+echo "Updating repositories list"
+apt-get update
+
+# Remove
+#-------
+
+echo "Removing following softwares: $REMOVE_LIST"
+apt-get autoremove $REMOVE_LIST
+
+# Upgrade
+#-------
+
+echo "Updating system"
+apt-get upgrade
+
+# Additionnals installs
+#----------------------
+
+echo "Installing following softwares: $LIST"
+apt-get install $LIST
+
+
+fi
+
+# Others
+########
+
+
+#Dropbox 64 bit :
+cd ~ && wget -O - "http://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+
+# Vimrc
+#curl -o .vimrc https://bitbucket.org/Pierrecle/configs/raw/default/vimrc
+
+# Bashrc
+#curl -o .bashrc https://bitbucket.org/Pierrecle/configs/raw/default/bashrc
+
+# Gnome-terminal
+#wget https://bitbucket.org/Pierrecle/configs/raw/default/GConfTool2/gnome-terminal.xml
+#gconftool-2 --load gnome-terminal.xml
+#rm gnome-terminal.xml
+
+# Sublime Text 2 config
+#if [[ "$LIST" == *"sublime-text-2"* ]]
+#then
+#        wget -O ~/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings https://bitbucket.org/Pierrecle/configs/raw/default/SublimeText2/Preferences.sublime-settings
+
+fi
+
+# Restart Nautilus
+nautilus -q
+echo "========================================================================"
+echo
+echo "Removed softwares: $REMOVE_LIST"
+echo
+echo "========================================================================"
+echo
+echo "Installed softwares: $LIST"
+echo
+echo "========================================================================"
+echo
+echo "Pour lancer finir l'installation de dropxbox ~/.dropbox-dist/dropboxd"
+echo ""
+echo "To change the login image, change the line \"background=...\" in /etc/lightdm/unity-greeter.conf"
+echo ""
+echo "Press Enter to relaunch your session"
+read ANSWER
+service lightdm restart
+
+
+#
+#http://gmic.sourceforge.net/gimp.shtml
+#http://www.sublimetext.com/2
+#
+#
+#
+#
+
+# Script end
+#-----------
