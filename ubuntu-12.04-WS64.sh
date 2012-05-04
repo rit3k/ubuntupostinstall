@@ -11,32 +11,34 @@ dpkg -l > /tmp/pkg-before.txt
 
 #=============================================================================
 # Application list to install:
-#(virtualbox virtualbox-guest-additions ..
+# (en vrac a l'occaz : virtualbox virtualbox-guest-additions xchat pidgin verbiste bluefish easystroke darktable imagemagick..
+# nautilus-image-converter conky unace unrar zip unzip openshot compizconfig-settings-manager lsb-core(pour google earth) 
+# Jupiter (a must have for Laptop) flashplugin-downloader (32bit) gmic gimp-gmic picard geany sublime-text-2-beta
 # See further for applications that requires specific repository
-LIST=" nautilus-dropbox"
+# Restricted extra
+LIST=" ubuntu-restricted-extras p7zip-full p7zip-rar"
 # Developpement
-LIST=$LIST" vim git-core sublime-text-2 oracle-java7-installer"
+LIST=$LIST" vim git-core oracle-java7-installer"
 # Multimedia
-LIST=$LIST" spotify-client-qt ffmpeg vlc shutter darktable"
+LIST=$LIST" spotify-client-qt ffmpeg vlc shutter vlc x264 istanbul gimp gimp-plugin-registry arista mypaint libdvdread4"
 # Network
-LIST=$LIST" "
+LIST=$LIST" terminator gparted lm-sensors"
 # System
-LIST=$LIST" curl htop"
+LIST=$LIST" curl htop terminator compizconfig-settings-manager hardinfo most tree"
 # Web
-LIST=$LIST" google-chrome-stable ttf-mscorefonts-installer"
+LIST=$LIST" google-chrome-stable ttf-mscorefonts-installer nautilus-dropbox filezilla"
 #=============================================================================
 
 # Application list to remove: adapt it to your needs
 # Internet
-REMOVE_LIST="tomboy"
+REMOVE_LIST=""
 # Internet
-REMOVE_LIST=$REMOVE_LIST" firefox-locale-en thunderbird transmission-common"
+REMOVE_LIST=$REMOVE_LIST"transmission-common"
 # Multimedia 
-REMOVE_LIST=$REMOVE_LIST" banshee totem-common shotwell"
+REMOVE_LIST=$REMOVE_LIST""
 # Games 
 REMOVE_LIST=$REMOVE_LIST" gnome-games-common gbrainy aisleriot"
-# LibreOffice 
-REMOVE_LIST=$REMOVE_LIST" libreoffice-common"
+
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
@@ -52,30 +54,17 @@ ADDAPT="add-apt-repository -y"
 UBUNTUVERSION=`lsb_release -cs`
 echo "Adding repositories for Ubuntu $UBUNTUVERSION"
 
-# Restricted extra
-# The Ubuntu Restricted Extras will install Adobe Flash Player, Java Runtime Environment (JRE) (sun-java-jre) with Firefox plug-ins (icedtea), a set of Microsoft Fonts (msttcorefonts), multimedia codecs (w32codecs or w64codecs), mp3-compatible encoding (lame), FFMpeg, extra Gstreamer codecs, the package for DVD decoding (libdvdread4, but see below for info on libdvdcss2), the unrar archiver, odbc, and cabextract. It also installs multiple "stripped" codecs and avutils (libavcodec-unstripped-52 and libavutil-unstripped-49).
-LIST=$LIST" ubuntu-restricted-extras"
-
-# Latest NVidia GPU driver
-#$ADDAPT ppa:ubuntu-x-swat/x-updates
-
 # Shutter screen capture
 $ADDAPT ppa:shutter
-
-# MKVExtractor GUI
-$ADDAPT ppa:hizo/logiciels
-
-# Darktable
-$ADDAPT ppa:pmjdebruijn/darktable-release-plus
 
 # Oracle Java
 $ADDAPT ppa:webupd8team/java
 
-# Wine
-$ADDAPT ppa:ubuntu-wine/ppa
+# Jupiter (a must have for Laptop)
+#$ADDAPT ppa:webupd8team/jupiter
 
-# Gimp
-$ADDAPT ppa:otto-kesselgulasch/gimp
+# Sublime text 2 (sublime but not FOSS and beta and huge price and mono :()
+$ADDAPT ppa:webupd8team/sublime-text-2
 
 # Google Chrome
 egrep '^deb\ .*chrome' /etc/apt/sources.list > /dev/null
@@ -166,6 +155,8 @@ fi
 
 fi
 
+dpkg -l > /tmp/pkg-after.txt
+
 # Restart Nautilus
 nautilus -q
 echo "========================================================================"
@@ -190,10 +181,11 @@ service lightdm restart
 #
 #http://gmic.sourceforge.net/gimp.shtml
 #http://www.sublimetext.com/2
+# Manually downloaded softwares
 #
+# Firefox extensions
 #
-#
-#
+# Chrome extensions
 
 # Script end
 #-----------
