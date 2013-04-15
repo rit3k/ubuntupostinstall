@@ -16,6 +16,8 @@ action_dummy = dpkg -l > /tmp/pkg-before.txt
 
 # Libreoffice
 ppa_libreoffice = ppa:libreoffice/ppa
+#sudo add-apt-repository ppa:libreoffice/ppa
+#sudo apt-get update
 
 # Shutter screen capture
 ppa_shutter = ppa:shutter
